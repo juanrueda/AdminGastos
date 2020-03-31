@@ -2,12 +2,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdminGastos.Models
 {
-    public class GastosContext : DbContext
+    public class GastoContext : DbContext
     {
-        public GastosContext(DbContextOptions<GastosContext> options)
+        public GastoContext(DbContextOptions<GastoContext> options) : base(options)
         {
             
         }
+
+        public DbSet<Gasto> Gastos {get; set;}
 
     }
 }
