@@ -2,79 +2,97 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using AdminGastos.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
+using AdminGastos.Dto.Gasto;
 
 namespace AdminGastos.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class GastoController : ControllerBase
     {
-        private readonly GastoContext _context;
+        private readonly IGastoService _gastoService;
 
-        public GastoController(GastoContext context) => _context = context;
-
-        //GET: api/Gasto
-        [HttpGet]
-        public ActionResult<IEnumerable<Gasto>> GetGastos()
+          public GastoController(IGastoService gastoService)
         {
-            return _context.Gastos;
+            _gastoService = gastoService;
         }
 
-        //GET: api/gasto/n
-        [HttpGet("{id}")]
-        public ActionResult<Gasto> GetGastoById(int id)
+        //GET: Gasto
+        [HttpGet]
+        public async Task<IActionResult> GetAllGastos()
         {
-            var gasto = _context.Gastos.Find(id);
+            return Ok(await _gastoService.GetAllGastos());
+        }
+
+        //GET: Gasto/n
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetGastoById(int id)
+        {
+            var gasto = _gastoService.GetGastoById(id);
 
             if (gasto == null)
             {
                 return NotFound();
             }
 
-            return gasto;
+            return Ok(await gasto);
         }
 
-        //POST: api/gasto
+        // //GET: Gasto/nombre
+        // [HttpGet("{nombre}")]
+        // public IActionResult GetGastoByNombre(string nombre)
+        // {
+        //     return Ok(_context.Gastos.AllAsync(g => g.Nombre == nombre));
+        // }
 
+
+        // //GET: Gasto/suma
+        // [HttpGet("suma")]
+        // public ActionResult<decimal> SumaGastos()
+        // {
+        //     decimal suma = 0;
+        //     foreach (Gasto gasto in _context.Gastos)
+        //     {
+        //         suma = suma + gasto.Importe;
+        //     }
+
+        //     return suma;
+        // }
+
+
+        //POST: Gasto
         [HttpPost]
-        public ActionResult<Gasto> PostGasto(Gasto gasto)
+        public async Task<IActionResult> PostGasto(AddGastoDto gasto)
         {
-            _context.Gastos.Add(gasto);
-            _context.SaveChanges();
-
-            return CreatedAtAction("GetGastoById", new Gasto { ID = gasto.ID }, gasto);
+            return Ok(await _gastoService.PostGasto(gasto));
         }
 
-        //PUT: api/gasto/n
+        //PUT: Gasto/n
         [HttpPut("{id}")]
-        public ActionResult PutGasto(int id, Gasto gasto)
+        public async Task<IActionResult> PutGasto(int id, Gasto gasto)
         {
             if (id != gasto.ID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(gasto).State = EntityState.Modified;
-            _context.SaveChanges();
-
-            return NoContent();
+           return Ok(await _gastoService.PutGasto(id, gasto));
         }
 
-        //DELETE: api/gasto/n
+        //DELETE: Gasto/n
         [HttpDelete("{id}")]
-        public ActionResult<Gasto> DeleteGasto(int id)
+        public async Task<IActionResult> DeleteGasto(int id)
         {
-            var gasto = _context.Gastos.Find(id);
+            var gasto = _gastoService.GetGastoById(id);
 
             if (gasto == null)
             {
                 return NotFound();
             }
 
-            _context.Gastos.Remove(gasto);
-            _context.SaveChanges();
-
-            return gasto;
+           return Ok(await _gastoService.DeleteGasto(id));
         }
 
     }
