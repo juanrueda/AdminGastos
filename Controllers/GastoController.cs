@@ -14,7 +14,7 @@ namespace AdminGastos.Controllers
     {
         private readonly IGastoService _gastoService;
 
-          public GastoController(IGastoService gastoService)
+        public GastoController(IGastoService gastoService)
         {
             _gastoService = gastoService;
         }
@@ -69,30 +69,30 @@ namespace AdminGastos.Controllers
             return Ok(await _gastoService.PostGasto(gasto));
         }
 
-        //PUT: Gasto/n
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGasto(int id, Gasto gasto)
+        //PUT: Gasto
+        [HttpPut]
+        public async Task<IActionResult> PutGasto(UpdateGastoDto updatedGasto)
         {
-            if (id != gasto.ID)
+            ServiceResponse<GetGastoDto> response = await _gastoService.PutGasto(updatedGasto);
+            if (response.Data == null)
             {
-                return BadRequest();
+                return NotFound(response);
             }
-
-           return Ok(await _gastoService.PutGasto(id, gasto));
+            return Ok(response);
         }
 
         //DELETE: Gasto/n
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGasto(int id)
         {
-            var gasto = _gastoService.GetGastoById(id);
+            ServiceResponse<IEnumerable<GetGastoDto>> response = await _gastoService.DeleteGasto(id);
 
-            if (gasto == null)
+            if (response.Data == null)
             {
-                return NotFound();
+                return NotFound(response);
             }
 
-           return Ok(await _gastoService.DeleteGasto(id));
+            return Ok(response);
         }
 
     }

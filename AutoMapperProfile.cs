@@ -11,6 +11,8 @@ namespace AdminGastos
             CreateMap<Gasto, GetGastoDto>();
             CreateMap<AddGastoDto, Gasto>();
             CreateMap<AddGastoDto, GetGastoDto>();
+            CreateMap<UpdateGastoDto, Gasto>();
+            CreateMap<UpdateGastoDto, GetGastoDto>();
         }
     }
 }
