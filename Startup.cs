@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using AdminGastos.Models;
+using AdminGastos.Data;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 

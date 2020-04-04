@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AdminGastos.Dto.Gasto;
 using AdminGastos.Models;
+using AdminGastos.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
@@ -28,15 +29,20 @@ public class GastoService : IGastoService
     public async Task<ServiceResponse<GetGastoDto>> GetGastoById(int id)
     {
         ServiceResponse<GetGastoDto> serviceResponse = new ServiceResponse<GetGastoDto>();
-        serviceResponse.Data = _mapper.Map<GetGastoDto>(_context.Gastos.Find(id));
+        
+        Gasto gasto = await _context.Gastos.FirstOrDefaultAsync(g => g.ID == id);
+
+        serviceResponse.Data = _mapper.Map<GetGastoDto>(gasto);
         return serviceResponse;
     }
     public async Task<ServiceResponse<IEnumerable<GetGastoDto>>> PostGasto(AddGastoDto newGasto)
     {
         ServiceResponse<IEnumerable<GetGastoDto>> serviceResponse = new ServiceResponse<IEnumerable<GetGastoDto>>();
 
-        _context.Gastos.Add(_mapper.Map<Gasto>(newGasto));
-        _context.SaveChanges();
+        Gasto gasto = _mapper.Map<Gasto>(newGasto);
+
+        await _context.Gastos.AddAsync(gasto);
+        await _context.SaveChangesAsync();
 
         serviceResponse.Data = _context.Gastos.Select(g => _mapper.Map<GetGastoDto>(g));
 
@@ -47,8 +53,16 @@ public class GastoService : IGastoService
         ServiceResponse<GetGastoDto> serviceResponse = new ServiceResponse<GetGastoDto>();
         try
         {
-            _context.Entry(_mapper.Map<Gasto>(updatedGasto)).State = EntityState.Modified;
-            _context.SaveChanges();
+            Gasto gasto = await _context.Gastos.FindAsync(updatedGasto.ID);
+
+            gasto.Nombre = updatedGasto.Nombre;
+            gasto.Importe = updatedGasto.Importe;
+            gasto.Pagado = updatedGasto.Pagado;
+            gasto.FechaVencimiento = updatedGasto.FechaVencimiento;
+
+            //_context.Entry(_mapper.Map<Gasto>(updatedGasto)).State = EntityState.Modified;
+            _context.Gastos.Update(gasto);
+            await _context.SaveChangesAsync();
 
             serviceResponse.Data = _mapper.Map<GetGastoDto>(updatedGasto);
         }
@@ -65,10 +79,10 @@ public class GastoService : IGastoService
 
         try
         {
-            var gasto = _context.Gastos.Find(id);
+            Gasto gasto = await _context.Gastos.FindAsync(id);
 
             _context.Gastos.Remove(gasto);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             serviceResponse.Data = _context.Gastos.Select(g => _mapper.Map<GetGastoDto>(g));
         }
