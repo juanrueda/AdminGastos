@@ -23,14 +23,17 @@ public class GastoService : IGastoService
     public async Task<ServiceResponse<IEnumerable<GetGastoDto>>> GetAllGastos()
     {
         ServiceResponse<IEnumerable<GetGastoDto>> serviceResponse = new ServiceResponse<IEnumerable<GetGastoDto>>();
-        serviceResponse.Data = _context.Gastos.Select(g => _mapper.Map<GetGastoDto>(g));
+
+        IEnumerable<Gasto> gastos = await _context.Gastos.ToListAsync();
+
+        serviceResponse.Data = gastos.Select(g => _mapper.Map<GetGastoDto>(g));
         return serviceResponse;
     }
     public async Task<ServiceResponse<GetGastoDto>> GetGastoById(int id)
     {
         ServiceResponse<GetGastoDto> serviceResponse = new ServiceResponse<GetGastoDto>();
         
-        Gasto gasto = await _context.Gastos.FirstOrDefaultAsync(g => g.ID == id);
+        Gasto gasto = await _context.Gastos.FindAsync(id);
 
         serviceResponse.Data = _mapper.Map<GetGastoDto>(gasto);
         return serviceResponse;
