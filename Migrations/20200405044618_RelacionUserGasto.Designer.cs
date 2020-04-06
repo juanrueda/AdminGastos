@@ -4,14 +4,16 @@ using AdminGastos.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdminGastos.Migrations
 {
     [DbContext(typeof(GastoContext))]
-    partial class GastoContextModelSnapshot : ModelSnapshot
+    [Migration("20200405044618_RelacionUserGasto")]
+    partial class RelacionUserGasto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,17 +40,17 @@ namespace AdminGastos.Migrations
                     b.Property<bool>("Pagado")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("UsuarioId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Gastos");
                 });
 
-            modelBuilder.Entity("AdminGastos.Models.Usuario", b =>
+            modelBuilder.Entity("AdminGastos.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,19 +63,19 @@ namespace AdminGastos.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AdminGastos.Models.Gasto", b =>
                 {
-                    b.HasOne("AdminGastos.Models.Usuario", "Usuario")
+                    b.HasOne("AdminGastos.Models.User", "User")
                         .WithMany("Gastos")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

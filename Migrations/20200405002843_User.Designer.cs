@@ -4,14 +4,16 @@ using AdminGastos.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AdminGastos.Migrations
 {
     [DbContext(typeof(GastoContext))]
-    partial class GastoContextModelSnapshot : ModelSnapshot
+    [Migration("20200405002843_User")]
+    partial class User
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,12 +40,7 @@ namespace AdminGastos.Migrations
                     b.Property<bool>("Pagado")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Gastos");
                 });
@@ -61,19 +58,12 @@ namespace AdminGastos.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
-                });
-
-            modelBuilder.Entity("AdminGastos.Models.Gasto", b =>
-                {
-                    b.HasOne("AdminGastos.Models.Usuario", "Usuario")
-                        .WithMany("Gastos")
-                        .HasForeignKey("UsuarioId");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,6 +11,7 @@ namespace AdminGastos.Data
         }
 
         public DbSet<Gasto> Gastos {get; set;}
+        public DbSet<User> Users {get; set; }
 
     }
 }

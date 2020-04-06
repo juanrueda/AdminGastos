@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AdminGastos.Models
@@ -10,7 +11,9 @@ namespace AdminGastos.Models
         public decimal Importe { get; set; }
         public bool Pagado { get; set; }
         [DataType(DataType.Date)]
-        public DateTime FechaVencimiento { get; set; }   
+        public DateTime FechaVencimiento { get; set; }
+        public User User {get; set; }
+
 
     }
 }

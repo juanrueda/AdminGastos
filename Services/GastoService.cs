@@ -20,11 +20,11 @@ public class GastoService : IGastoService
         _context = context;
     }
 
-    public async Task<ServiceResponse<IEnumerable<GetGastoDto>>> GetAllGastos()
+    public async Task<ServiceResponse<IEnumerable<GetGastoDto>>> GetAllGastos(int userId)
     {
         ServiceResponse<IEnumerable<GetGastoDto>> serviceResponse = new ServiceResponse<IEnumerable<GetGastoDto>>();
 
-        IEnumerable<Gasto> gastos = await _context.Gastos.ToListAsync();
+        IEnumerable<Gasto> gastos = await _context.Gastos.Where(g => g.User.Id == userId).ToListAsync();
 
         serviceResponse.Data = gastos.Select(g => _mapper.Map<GetGastoDto>(g));
         return serviceResponse;

@@ -5,9 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using AdminGastos.Dto.Gasto;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace AdminGastos.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class GastoController : ControllerBase
@@ -20,10 +23,12 @@ namespace AdminGastos.Controllers
         }
 
         //GET: Gasto
-        [HttpGet]
+        [HttpGet("todos")]
         public async Task<IActionResult> GetAllGastos()
         {
-            return Ok(await _gastoService.GetAllGastos());
+            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+            return Ok(await _gastoService.GetAllGastos(userId));
         }
 
         //GET: Gasto/n
