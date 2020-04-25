@@ -4,7 +4,7 @@ using AdminGastos.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using AdminGastos.Dto.Gasto;
+using AdminGastos.Dto.GastoDto;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 

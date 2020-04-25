@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AdminGastos.Dto.Gasto;
-using AdminGastos.Models;
-using Microsoft.AspNetCore.Mvc;
+using AdminGastos.Dto.GastoDto;
 
 public interface IGastoService
 {

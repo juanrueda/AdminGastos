@@ -1,4 +1,4 @@
-namespace AdminGastos.Dto.User
+namespace AdminGastos.Dto.UserDto
 {
     public class UserRegisterDto
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AdminGastos.Dto.Gasto;
+using AdminGastos.Dto.GastoDto;
 using AdminGastos.Models;
 using AdminGastos.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +42,17 @@ public class GastoService : IGastoService
     {
         ServiceResponse<IEnumerable<GetGastoDto>> serviceResponse = new ServiceResponse<IEnumerable<GetGastoDto>>();
 
-        Gasto gasto = _mapper.Map<Gasto>(newGasto);
+        User user = await _context.Users.FindAsync(newGasto.UserId);
+
+        Gasto gasto = new Gasto();
+
+        gasto.Nombre = newGasto.Nombre;
+        gasto.Importe = newGasto.Importe;
+        gasto.FechaVencimiento = newGasto.FechaVencimiento;
+        gasto.Pagado = newGasto.Pagado;
+        gasto.User = user;
+        
+        //Gasto gasto = _mapper.Map<Gasto>(newGasto);
 
         await _context.Gastos.AddAsync(gasto);
         await _context.SaveChangesAsync();

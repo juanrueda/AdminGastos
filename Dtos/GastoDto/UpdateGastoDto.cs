@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AdminGastos.Dto.Gasto
+namespace AdminGastos.Dto.GastoDto
 {
-    public class GetGastoDto
+    public class UpdateGastoDto
     {
         public int ID { get; set; }
         public string Nombre { get; set; }

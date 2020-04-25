@@ -1,6 +1,6 @@
 using AdminGastos.Models;
 using AutoMapper;
-using AdminGastos.Dto.Gasto;
+using AdminGastos.Dto.GastoDto;
 
 namespace AdminGastos
 {

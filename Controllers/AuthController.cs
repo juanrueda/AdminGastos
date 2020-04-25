@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using AdminGastos.Models;
 using AdminGastos.Data;
 using System.Threading.Tasks;
-using AdminGastos.Dto.User;
+using AdminGastos.Dto.UserDto;
 
 namespace AdminGastos.Controllers
 {
