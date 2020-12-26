@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdminGastos.Migrations
 {
     [DbContext(typeof(GastoContext))]
-    [Migration("20200331203027_InitialCreate")]
+    [Migration("20201208144043_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,9 +40,42 @@ namespace AdminGastos.Migrations
                     b.Property<bool>("Pagado")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Gastos");
+                });
+
+            modelBuilder.Entity("AdminGastos.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("AdminGastos.Models.Gasto", b =>
+                {
+                    b.HasOne("AdminGastos.Models.User", "User")
+                        .WithMany("Gastos")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

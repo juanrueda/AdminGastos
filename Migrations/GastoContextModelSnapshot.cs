@@ -38,42 +38,42 @@ namespace AdminGastos.Migrations
                     b.Property<bool>("Pagado")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("UsuarioId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Gastos");
                 });
 
-            modelBuilder.Entity("AdminGastos.Models.Usuario", b =>
+            modelBuilder.Entity("AdminGastos.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<byte[]>("PassWordHash")
+                    b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AdminGastos.Models.Gasto", b =>
                 {
-                    b.HasOne("AdminGastos.Models.Usuario", "Usuario")
+                    b.HasOne("AdminGastos.Models.User", "User")
                         .WithMany("Gastos")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }
